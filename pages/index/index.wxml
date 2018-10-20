@@ -1,0 +1,30 @@
+<!--index.wxml-->
+
+<view class="container">
+
+  <view class="main">
+    <view class="logo"><image src="/images/logo.png" /></view>
+    <view class="name" data-text="恐龙小博士">恐龙小博士</view>
+    <view class="slogan">考考你的恐龙知识，看你认识多少种恐龙</view>
+  </view>
+
+  <view class="menu">
+    <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" class="button submit {{actived == 1 ? '' : 'disabled'}}" wx:if="{{actived != 1}}">开始游戏 <small>授权</small></button>
+    <button bindtap="onStart" class="button submit {{actived == 1 ? '' : 'disabled'}}" wx:if="{{actived == 1}}">开始游戏</button>
+    <button bindtap="onRank" class="button {{actived == 1 ? '' : 'disabled'}}">排行榜</button>
+    <button open-type="share" class="button">邀请好友 PK</button>
+  </view>
+</view>
+
+<dialog id="dialog">
+  <view class="dialog-text">
+    <em class="content">你已经答对了 <strong>{{duration}}</strong> 道题，现在你可以</em>
+    <dfn class="choice">A：【使用复活卡】继续上次的题目 <var>你有 <strong>3</strong> 张复活卡</var></dfn>
+    <dfn class="choice">B：选择【重新开始】再来一次 <var>你的得分将会被清零</var></dfn>
+  </view>
+  <view class="dialog-action">
+    <button bindtap="onContinue" class="button submit">使用复活卡</button>
+    <button bindtap="onRestart" class="button">重新开始</button>
+    <button open-type="share" bindtap="onShare" class="button">求助好友 <small>复活卡 +1</small></button>
+  </view>
+</dialog>

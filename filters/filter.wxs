@@ -1,0 +1,106 @@
+//  filters/filter.wxs
+
+/*
+  说明：时间戳转日期时间值
+*/
+var getDateTime = function (timestamp) {
+
+  return getDate(parseInt(timestamp.replace('/Date(', '').replace(')/', ''), 10));
+}
+
+/*
+  说明：日期时间转 JSON 结构
+*/
+var getDateTimeJSON = function (dateTime) {
+
+  return {
+    year: dateTime.getFullYear(),
+    month: dateTime.getMonth() + 1,
+    day: dateTime.getDate(),
+    hour: dateTime.getHours(),
+    minute: dateTime.getMinutes(),
+    second: dateTime.getSeconds()
+  };
+}
+
+/*
+  说明：JSON 结构转日期时间字符串
+*/
+var getDateTimeString = function (dateTimeJSON) {
+
+  return dateTimeJSON.year + '-' +
+    (dateTimeJSON.month > 9 ? dateTimeJSON.month : '0' + dateTimeJSON.month) + '-' +
+    (dateTimeJSON.day > 9 ? dateTimeJSON.day : '0' + dateTimeJSON.day) + ' ' +
+    (dateTimeJSON.hour > 9 ? dateTimeJSON.hour : '0' + dateTimeJSON.hour) + ':' +
+    (dateTimeJSON.minute > 9 ? dateTimeJSON.minute : '0' + dateTimeJSON.minute) + ':' +
+    (dateTimeJSON.second > 9 ? dateTimeJSON.second : '0' + dateTimeJSON.second);
+}
+
+/*
+  说明：时间转时辰
+*/
+var getHourString = function (hour) {
+
+  if (hour >= 23 && hour < 2) { return '午夜'; }
+  else if (hour < 23 && hour >= 20) { return '晚上'; }
+  else if (hour < 20 && hour >= 17) { return '傍晚'; }
+  else if (hour < 17 && hour >= 14) { return '下午'; }
+  else if (hour < 14 && hour >= 11) { return '中午'; }
+  else if (hour < 11 && hour >= 8) { return '上午'; }
+  else if (hour < 8 && hour >= 5) { return '清晨'; }
+  else if (hour < 5 && hour >= 2) { return '凌晨'; }
+  else { return '异次元'; }
+}
+
+/*
+  说明：获取补 0 后的数值
+*/
+var getFullNumber = function (value) {
+
+  return parseInt(value, 10) < 10 ? '0' + value : value;
+}
+
+module.exports = {
+
+  /*
+    说明：获取日期时间字符串
+  */
+  getTimeStamp: function (timestamp, formatType) {
+    
+    if (timestamp){
+      var todayDate = getDate(Date.now());
+      var todayJSON = getDateTimeJSON(todayDate);
+      var stampDate = getDateTime(timestamp);
+      var stampJSON = getDateTimeJSON(stampDate);
+      var ticksDays = (todayDate.getTime() - stampDate.getTime()) / 1000 / 60 / 60 / 24;
+
+      switch (formatType) {
+        case 101:
+          if (todayJSON.year - stampJSON.year > 1) { return (todayJSON.year - stampJSON.year) + '年前'; }
+          else if (todayJSON.year - stampJSON.year == 1) { return '去年' + stampJSON.month + '月'; }
+          else {
+            if (ticksDays > 1) { return stampJSON.month + '月' + stampJSON.day + '日'; }
+            else if (ticksDays == 1) { return '昨天' + getHourString(stampJSON.hour); }
+            else { return getFullNumber(stampJSON.hour) + ':' + getFullNumber(stampJSON.minute); }
+          }
+        case 201:
+          if (todayJSON.year - stampJSON.year > 1) { return stampJSON.year + '年'; }
+          else if (todayJSON.year - stampJSON.year == 1) { return '去年'; }
+          else if (ticksDays > 1) { return stampJSON.month + '月' + stampJSON.day + '日'; }
+          else if (ticksDays == 1) { return '昨天'; }
+          else { return '今天'; }
+          break;
+        case 301:
+          if (todayJSON.year - stampJSON.year > 0) { return stampJSON.month + '月' + stampJSON.day + '日'; }
+          else if (ticksDays >= 1) { return getHourString(stampJSON.hour); }
+          else { return getFullNumber(stampJSON.hour) + ':' + getFullNumber(stampJSON.minute); }
+        case 401:
+          if (stampJSON.year - todayJSON.year > 1) { return stampJSON.year + '年' + stampJSON.month + '月'; }
+          else if (stampJSON.year - todayJSON.year == 1) { return '明年' + stampJSON.month + '月' + stampJSON.day + '日'; }
+          else { return stampJSON.month + '月' + stampJSON.day + '日'; }
+        default:
+          return getDateTimeString(stampJSON);
+      }
+    }
+  }
+};

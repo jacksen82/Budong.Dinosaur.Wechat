@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/game/index",
+    "pages/rank/index"
+  ],
+  "window": {
+    "onReachBottomDistance": 50,
+    "backgroundTextStyle": "light",
+    "backgroundColorTop": "#2e2e2e",
+    "backgroundColorBottom": "#2e2e2e",
+    "navigationStyle": "default",
+    "navigationBarBackgroundColor": "#2e2e2e",
+    "navigationBarTitleText": "恐龙小博士",
+    "navigationBarTextStyle": "white"
+  }
+}

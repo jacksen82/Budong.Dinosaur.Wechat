@@ -1,0 +1,26 @@
+<!--pages/rank/index.wxml-->
+
+<view class="container">
+
+  <view class="caption">全国总排行 <small>Top 10</small></view>
+
+  <view class="list">
+    <view class="item" wx:for="{{globalItems}}" wx:key="item">
+      <text class="index {{index > 2 ? '' : 'top'}}">{{index + 1}}</text>
+      <image src="{{item.avatarUrl}}" class="avatar" />
+      <text class="nick">{{item.nick}}</text>
+      <text class="score">{{item.score}}</text>
+    </view>
+  </view>
+  
+  <view class="caption">好友排行</view>
+
+  <view class="list">
+    <view class="item" wx:for="{{friendItems}}" wx:key="item">
+      <text class="index {{index > 2 ? '' : 'top'}}">{{index + 1}}</text>
+      <image src="{{item.avatarUrl}}" class="avatar" />
+      <text class="nick">{{item.nick}}</text>
+      <text class="score">{{item.score}}</text>
+    </view>
+  </view>
+</view>

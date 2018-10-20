@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "解救食草龙",
+  "usingComponents": {
+    "dialog": "/components/dialog"
+  }
+}
